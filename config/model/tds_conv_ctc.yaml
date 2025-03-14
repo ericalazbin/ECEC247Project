@@ -1,0 +1,28 @@
+# @package _global_
+module:
+  _target_: emg2qwerty.lightning.CNN_LSTM_CTCModule
+  cnn_out_channels: [16,32,64,128]       # Output channels for the CNN layer.
+  lstm_hidden_dim: 512       # Hidden state dimension for the LSTM.
+  lstm_num_layers: 4          # Number of LSTM layers.
+  dropout_rate: 0.1
+  optimizer:
+    _target_: torch.optim.Adam
+    lr: 0.0001
+    weight_decay: 0.0001
+  lr_scheduler:
+    scheduler:
+      _target_: pl_bolts.optimizers.lr_scheduler.LinearWarmupCosineAnnealingLR
+      warmup_epochs: 10
+      max_epochs: ${trainer.max_epochs}
+      warmup_start_lr: 1.0e-08
+      eta_min: 1.0e-06
+    interval: epoch
+
+
+datamodule:
+  _target_: emg2qwerty.lightning.WindowedEMGDataModule
+  window_length: 8000  # 4 sec windows for 2kHz EMG
+  padding: [1800, 200]  # 900ms past context, 100ms future context
+
+trainer:
+  gradient_clip_val:5.0
