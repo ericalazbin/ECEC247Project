@@ -62,21 +62,21 @@ band_prefilter:
 
 transforms:
   train:
-    #- ${band_prefilter} #Yep
-    #- ${amp_scale} #Yep
+    - ${band_prefilter} #Yep
+    - ${amp_scale} #Yep
     - ${to_tensor}
     #- ${channel_dropout} #Nope
     - ${band_rotation}
     - ${temporal_jitter} #Nope
     #- ${time_warp} 
-    #- ${amplitude_random_scaling} #Yep
-    #- ${add_gaussian_noise} #Yep
+    - ${amplitude_random_scaling} #Yep
+    - ${add_gaussian_noise} #Yep
     - ${logspec}
     - ${specaug}
 
   val:
-    #- ${band_prefilter} #Yep
-    #- ${amp_scale} #Yep
+    - ${band_prefilter} #Yep
+    - ${amp_scale} #Yep
     - ${to_tensor}
     - ${logspec}
 
